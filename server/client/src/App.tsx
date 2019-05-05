@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import TaskProvider from './context/TaskContext';
 
 import GlobalStyles from './styled/GlobalStyles';
-import Container from './components/Container';
+import Layout from './components/Layout';
 
 import theme from './styled/theme';
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <Fragment>
           <GlobalStyles />
           <TaskProvider>
-            <Container />
+            <Layout />
           </TaskProvider>
         </Fragment>
       </ThemeProvider>

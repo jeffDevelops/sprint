@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext } from '../context/TaskContext';
-
 import Tasks from './Tasks';
 import Subtasks from './Subtasks';
 import SubtaskDetail from './SubtaskDetail';
@@ -20,6 +18,16 @@ const GridContainer = styled.main`
     'tasks tasks subtask_detail subtask_detail viz'
     'tasks tasks subtasks subtasks subtasks'
     'tasks tasks subtasks subtasks subtasks';
+
+  @media(max-width: 500px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas:
+      'viz'
+      'tasks'
+      'subtasks'
+      'subtask_detail';
+  }
 `;
 
 interface IGridItem {
@@ -30,26 +38,27 @@ const GridItem = styled.section<IGridItem>`
   grid-area: ${props => props.gridArea};
 `;
 
-const Container: React.FC = () => {
-  const taskContext: ITaskContext = useContext(TaskContext);
-  console.log({taskContext})
+const Layout: React.FC = () => (
+  <GridContainer>
 
-  return (
-    <GridContainer>
-      <GridItem gridArea="tasks">
-        <Tasks />
-      </GridItem>
-      <GridItem gridArea="subtask_detail">
-        <SubtaskDetail />
-      </GridItem>
-      <GridItem gridArea="viz">
-        <Viz />
-      </GridItem>
-      <GridItem gridArea="subtasks">
-        <Subtasks />
-      </GridItem>
-    </GridContainer>
-  )
-}
+    <GridItem gridArea="tasks">
+      <Tasks />
+    </GridItem>
 
-export default Container;
+    <GridItem gridArea="subtask_detail">
+      <SubtaskDetail />
+    </GridItem>
+    
+    <GridItem gridArea="viz">
+      <Viz />
+    </GridItem>
+
+    <GridItem gridArea="subtasks">
+      <Subtasks />
+    </GridItem>
+
+  </GridContainer>
+)
+
+
+export default Layout;

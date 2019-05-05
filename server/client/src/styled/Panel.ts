@@ -6,6 +6,7 @@ const Panel = styled.div`
   background-color: #fff;
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
+  overflow: auto;
 `;
 
 export default Panel;

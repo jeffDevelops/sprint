@@ -5,11 +5,16 @@ import 'styled-components'
 declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
-      main: string
+      main: string,
       black: string,
       gray: string,
+      lightGray: string
     }
-    font: string
+    font: {
+      family: string,
+      normalWeight: number,
+      boldWeight: number,
+    }
     borderRadius: string
     boxShadow: string
     transitions: {

@@ -66,7 +66,8 @@ export default {
   'Server Boilerplate': [
     {
       name: 'Listener, Entry Point',
-      description: 'Body Parser, Logger, Use Routers, Server Listener'
+      description: 'Body Parser, Logger, Use Routers, Server Listener',
+      points: 1,
     },
     {
       name: 'Models',
@@ -88,6 +89,7 @@ export default {
     {
       name: 'Subtask Seed',
       description: 'Object of subtask arrays organized by name, conforming to subtask schema',
+      points: 3
     }
   ]
 }
