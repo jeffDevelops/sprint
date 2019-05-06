@@ -15,7 +15,7 @@ const theme: DefaultTheme = {
   borderRadius: '4px',
   boxShadow: '0px 0px 10px -1px rgba(204,204,204,1)',
   transitions: {
-    in: '.3s',
+    in: '.1s',
     out: '.1s',
   }
 }

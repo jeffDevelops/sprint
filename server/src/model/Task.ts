@@ -12,6 +12,7 @@ const TaskSchema: Schema = new Schema({
   },
   subtasks: [{
     type: Schema.Types.ObjectId,
+    ref: 'Subtask'
   }],
 });
 

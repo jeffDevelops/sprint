@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 
-interface IFlexStartRow {
+interface IFlexStartCol {
+  readonly justifyContent: string
+  readonly alignItems?: string
   readonly height?: string
   readonly width?: string
   readonly margin?: string
   readonly padding?: string
-  readonly alignItems?: string
 }
 
-const FlexStartRow = styled.div<IFlexStartRow>`
+const FlexStartCol = styled.div<IFlexStartCol>`
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: ${props => props.justifyContent};
   align-items: ${props => props.alignItems ? props.alignItems : 'center'};
   height: ${props => props.height ? props.height : 'auto'};
   width: ${props => props.width ? props.width : '100%'};
@@ -18,4 +20,4 @@ const FlexStartRow = styled.div<IFlexStartRow>`
   padding: ${props => props.padding ? props.padding : '0'};
 `;
 
-export default FlexStartRow;
+export default FlexStartCol;

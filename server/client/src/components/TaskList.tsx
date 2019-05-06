@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { TaskContext, ITaskContext, ITask } from '../context/TaskContext';
 
-import SpaceBetweenRow from '../styled/FormatHelpers/SpaceBetweenRow';
-import FlexStartCol from '../styled/FormatHelpers/FlexStartCol';
-import FlexStartRow from '../styled/FormatHelpers/FlexStartRow';
+import FlexCol from '../styled/FormatHelpers/FlexCol';
+import FlexRow from '../styled/FormatHelpers/FlexRow';
 import ListItem from '../styled/ListItem';
 import ScrollableContainer from '../styled/ScrollableContainer';
 import NoTasks from '../styled/NoData';
 import P from '../styled/P';
+import CompletionIndicator from '../styled/CompletionIndicator';
 
 const Metric = styled.span`
   display: inline;
@@ -23,26 +23,6 @@ const Task = styled(ListItem)`
   ${Metric} {
     color: ${props => props.active ? '#fff' : 'inherit'};
   }
-
-  &:hover {
-    ${Metric} {
-      color: #fff;
-      transition: color ${props => props.theme.transitions.in};
-    }
-  }
-`;
-
-const CompletionIndicator = styled.span`
-  display: inline;
-  padding: 0 10px;
-  background-color: ${props => props.theme.colors.gray};
-  color: #fff;
-  border-radius: ${props => props.theme.borderRadius};
-  height: 30px;
-  display: flex;
-  align-items: center;
-  margin: 3px 0;
-  font-size: .8em;
 `;
 
 const TaskList: React.FC = () => {
@@ -66,9 +46,10 @@ const TaskList: React.FC = () => {
           active={ currentTask ? task._id === currentTask._id : false }
         >
 
-          <SpaceBetweenRow>
+          <FlexRow justifyContent="space-between">
 
-            <FlexStartCol
+            <FlexCol
+              justifyContent="flex-start"
               alignItems="flex-start"
               margin="0"
               width="40%"
@@ -76,22 +57,26 @@ const TaskList: React.FC = () => {
 
               {/* TODO: */}
 
-              <FlexStartRow>
+              <FlexRow
+                justifyContent="flex-start"
+              >
                 <CompletionIndicator>100%</CompletionIndicator>
                 <Metric>Complete</Metric>
-              </FlexStartRow>
+              </FlexRow>
               
-              <FlexStartRow>
+              <FlexRow
+                justifyContent="flex-start"
+              >
                 <CompletionIndicator>5 / 10</CompletionIndicator>
                 <Metric>Subtasks</Metric>
-              </FlexStartRow>
+              </FlexRow>
               
 
-            </FlexStartCol>
+            </FlexCol>
 
             <P textAlign="right" width="60%">{ task.name }</P>
 
-          </SpaceBetweenRow>
+          </FlexRow>
 
         </Task>
       ))}

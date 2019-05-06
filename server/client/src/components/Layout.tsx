@@ -15,7 +15,7 @@ const GridContainer = styled.main`
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
-    'tasks tasks subtask_detail subtask_detail viz'
+    'tasks tasks viz subtask_detail subtask_detail'
     'tasks tasks subtasks subtasks subtasks'
     'tasks tasks subtasks subtasks subtasks';
 

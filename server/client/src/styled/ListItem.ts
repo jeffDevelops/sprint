@@ -7,7 +7,7 @@ interface IListItem {
 const ListItem = styled.li<IListItem>`
   padding: 15px;
   border-bottom: 1px solid ${props => props.theme.colors.lightGray};
-  cursor: pointer;
+  cursor: ${props => props.active ? 'default' : 'pointer'};
   transition: background-color ${props => props.theme.transitions.out};
   overflow: hidden;
   background-color: ${props => {
@@ -25,8 +25,10 @@ const ListItem = styled.li<IListItem>`
   }
 
   &:hover {
-    background-color: ${props => props.theme.colors.main};
-    color: #fff;
+    background-color: ${props => {
+      if (props.active) return props.theme.colors.main;
+      return props.theme.colors.lightGray;
+    }};
     transition: color ${props => props.theme.transitions.in};
   }
 `;

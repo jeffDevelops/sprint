@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 
-const Panel = styled.div`
+interface IPanel {
+  readonly padding?: string
+}
+
+const Panel = styled.div<IPanel>`
   height: 100%;
   width: 100%;
   background-color: #fff;
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   overflow: auto;
+  padding: ${props => props.padding ? props.padding : '0'};
 `;
 
 export default Panel;
