@@ -12,6 +12,8 @@ const Panel = styled.div<IPanel>`
   box-shadow: ${props => props.theme.boxShadow};
   overflow: auto;
   padding: ${props => props.padding ? props.padding : '0'};
+  transform: translateZ(0);
+  transition: height ${props => props.theme.transitions.in};
 `;
 
 export default Panel;

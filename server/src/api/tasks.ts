@@ -1,9 +1,13 @@
 import { Router } from 'express';
-import { getOne, getMany, update, destroy } from '../controller/tasks';
+import { getOne, getMany, create, update, destroy } from '../controller/tasks';
 
 const router: Router = Router();
 
 router.route('/')
-  .get(getMany);
+  .get(getMany)
+  .post(create);
+
+router.route('/:id')
+  .put(update);
 
 export default router;

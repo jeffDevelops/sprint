@@ -30,6 +30,36 @@ export default {
       points: 1,
       complete: true,
     },
+    {
+      name: 'Colors',
+      description: 'Decide on colors, define colors',
+      points: 1,
+      complete: true,
+    },
+    {
+      name: 'Border-radii',
+      description: 'Decide on border radii, define',
+      points: 1,
+      complete: false,
+    },
+    {
+      name: 'Font',
+      description: 'Decide on Font, define, include in public/index.html',
+      points: 2,
+      complete: true,
+    },
+    {
+      name: 'Transitions',
+      description: 'Define transition-in and transition-out',
+      points: 3,
+      complete: false,
+    },
+    {
+      name: 'Box shadows',
+      description: 'Define box-shadows',
+      points: 1,
+      complete: true,
+    },
   ],
   'Prototype UI Components': [
     {

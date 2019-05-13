@@ -6,20 +6,26 @@ interface IInputContainer {
   readonly padding?: string
 }
 
+interface IInput {
+  readonly fontSize?: string
+  readonly fontWeight?: string
+}
+
 export const Label = styled.label`
   color: ${props => props.theme.colors.gray};
   transition: color ${props => props.theme.transitions.out};
   font-size: .8em;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<IInput>`
   border: 0;
   border-bottom: 1px solid ${props => props.theme.colors.gray};
   padding: 4px 0;
   outline: none;
   transition: all ${props => props.theme.transitions.out};
   width: ${props => props.width ? props.width : '100%'};
-  font-size: 1em;
+  font-size: ${props => props.fontSize ? props.fontSize : '1em'};
+  font-weight: ${props => props.fontWeight ? props.fontWeight : '400'};
   margin-bottom: 5px;
 
   &:focus {

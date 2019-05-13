@@ -20,6 +20,18 @@ const Button = styled.button<IButton>`
   font-size: .9em;
   font-weight: 600;
   padding: 0 15px;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    box-shadow: ${props => props.theme.boxShadow};
+    opacity: .9;
+  }
+
+  &:active {
+    box-shadow: 0;
+    opacity: 1;
+  }
 `;
 
 export default Button;

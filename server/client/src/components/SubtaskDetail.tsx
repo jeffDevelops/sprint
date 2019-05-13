@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { TaskContext, ITaskContext } from '../context/TaskContext';
 
+import EditPoints from './EditPoints';
+
 import FlexRow from '../styled/FormatHelpers/FlexRow';
 import Heading from '../styled/Heading';
 import Panel from '../styled/Panel';
@@ -17,7 +19,13 @@ const SubtaskDetail: React.FC = () => {
   if (!currentSubtask && loading) {
     return <Panel><NoData>Loading</NoData></Panel>
   } else if (!currentSubtask && !loading) {
-    return <Panel><NoData>Select a subtask or create one below</NoData></Panel>
+    return (
+      <Panel>
+        <NoData>Select a subtask or &nbsp;
+          <LinkStyleButton>create one</LinkStyleButton>
+        </NoData>
+      </Panel>
+    )
   } else {
     return (
       <Panel padding="15px">
@@ -32,6 +40,8 @@ const SubtaskDetail: React.FC = () => {
 
         <Heading margin="15px 0 5px 0">Description</Heading>
         <Description>{ currentSubtask!.description ? currentSubtask!.description : '' }</Description>
+
+        <EditPoints subtask={ currentSubtask! } />
       </Panel>
     )
   }

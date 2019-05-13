@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext, ISubtask } from '../context/TaskContext';
+import { TaskContext, ITaskContext, IDbSubtask } from '../context/TaskContext';
 
 import TaskTitleBar from './TaskTitleBar';
 
@@ -20,7 +20,6 @@ import { CheckCircle } from 'styled-icons/boxicons-regular/CheckCircle';
 
 const checkboxStyles: string = `
   width: 30px;
-  margin-right: 15px;
   cursor: pointer;
 `;
   
@@ -43,11 +42,25 @@ const Subtask = styled(ListItem)`
   }
 `;
 
+interface IColumn {
+  readonly width: string
+}
+
+const Column = styled.div<IColumn>`
+  width: ${props => props.width};
+
+  ${props => props.theme.media.medium(`
+    &:last-of-type {
+      display: none;
+    }
+  `)}
+`;
+
 const Subtasks: React.FC = () => {
   const taskContext: ITaskContext = useContext(TaskContext);
-  const { loading, currentTask, selectSubtask, currentSubtask } = taskContext;
+  const { loading, currentTask, selectSubtask, currentSubtask, toggleComplete } = taskContext;
 
-  let subtasks: ISubtask[] = [] as ISubtask[];
+  let subtasks: IDbSubtask[] = [] as IDbSubtask[];
   if (currentTask) {
     subtasks = currentTask.subtasks;
   } else {
@@ -72,24 +85,31 @@ const Subtasks: React.FC = () => {
 
         { subtasks.length > 0 && subtasks.map(subtask => (
           <Subtask
-            onClick={ () => selectSubtask(subtask._id) }
+            onClick={ e => selectSubtask(subtask._id) }
             key={ subtask._id }
             active={ currentSubtask ? subtask._id === currentSubtask._id : false }
           >
           
             <FlexRow justifyContent="space-between">
 
-              { subtask.complete ? <Checked /> : <Unchecked /> }
+              { subtask.complete
+                ? <Checked onClick={ e => toggleComplete(subtask._id) }/>
+                : <Unchecked onClick={ e => toggleComplete(subtask._id) }/>
+              }
 
-              <CompletionIndicator>
-                { 
-                  subtask.points === 1
+              <CompletionIndicator width="50px">
+                { subtask.points === 1
                     ? `${subtask.points} pt`
                     : `${subtask.points} pts`
                 }
               </CompletionIndicator>
-              <P width="20%" fontWeight="600">{ subtask.name }</P>
-              <P width="50%">{ subtask.description }</P>
+              
+              <Column width="30%">
+                <P width="100%" fontWeight="600">{ subtask.name }</P>
+              </Column>
+              <Column width="40%">
+                <P width="100%" >{ subtask.description }</P>
+              </Column>
 
             </FlexRow>
 

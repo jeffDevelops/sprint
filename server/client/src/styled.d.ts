@@ -4,6 +4,11 @@ import 'styled-components'
 // and extend them!
 declare module 'styled-components' {
   export interface DefaultTheme {
+    media: {
+      small: (css: string) => string
+      medium: (css: string) => string
+      large: (css: string) => string
+    }
     colors: {
       main: string,
       black: string,

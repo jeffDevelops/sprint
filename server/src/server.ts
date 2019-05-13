@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 // Configure CORS
 app.use(cors({
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   origin: (origin: string, next: { (arg0: any, arg1: boolean): void; (arg0: Error): void; }) => {
     if (originWhitelist().includes(origin)) {
       next(null, true);

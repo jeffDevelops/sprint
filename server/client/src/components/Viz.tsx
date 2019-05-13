@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext, ISubtask } from '../context/TaskContext';
+import { TaskContext, ITaskContext, IDbSubtask } from '../context/TaskContext';
 
 import CompletionPieGraph from './CompletionPieGraph';
 
 import Panel from '../styled/Panel';
 import NoData from '../styled/NoData';
 import Heading from '../styled/Heading';
+import LinkStyleButton from '../styled/LinkStyleButton';
 
 const Viz: React.FC = () => {
   const taskContext: ITaskContext = useContext(TaskContext);
@@ -23,14 +24,14 @@ const Viz: React.FC = () => {
 
     // Tally points for all subtasks
     const totalPoints: number = currentTask!.subtasks
-      .reduce((acc: number, currentIndex: ISubtask): number => {
+      .reduce((acc: number, currentIndex: IDbSubtask): number => {
         acc += currentIndex.points;
         return acc;
       }, 0);
 
     // Tally completed subtasks' points
     const completedPoints: number = currentTask!.subtasks
-      .reduce((acc: number, currentIndex: ISubtask): number => {
+      .reduce((acc: number, currentIndex: IDbSubtask): number => {
         if (currentIndex.complete) acc += currentIndex.points;
         return acc;
       }, 0);
@@ -40,13 +41,19 @@ const Viz: React.FC = () => {
     const incompletion: number = Math.floor(100 - completion);
 
     return (
-      <Panel padding="15px">
-        <Heading margin="0 0 15px 0">{ currentTask!.name }</Heading>
+      <Panel>
+        <Heading margin="15px 15px 0 15px">{ currentTask!.name }</Heading>
 
-        <CompletionPieGraph
-          completion={ completion }
-          incompletion={ incompletion }
-        />
+        { currentTask!.subtasks.length > 0
+          ? <CompletionPieGraph
+              completion={ completion }
+              incompletion={ incompletion }
+            />
+          : <NoData>
+              This task doesn't have any subtasks yet. &nbsp;
+              <LinkStyleButton>Create one</LinkStyleButton>
+            </NoData>
+        }
 
       </Panel>
     )

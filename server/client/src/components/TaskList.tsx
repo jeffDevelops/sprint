@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext, ITask } from '../context/TaskContext';
+import { TaskContext, ITaskContext } from '../context/TaskContext';
 
 import FlexCol from '../styled/FormatHelpers/FlexCol';
 import FlexRow from '../styled/FormatHelpers/FlexRow';
@@ -10,6 +10,7 @@ import ScrollableContainer from '../styled/ScrollableContainer';
 import NoTasks from '../styled/NoData';
 import P from '../styled/P';
 import CompletionIndicator from '../styled/CompletionIndicator';
+import LinkStyleButton from '../styled/LinkStyleButton';
 
 const Metric = styled.span`
   display: inline;
@@ -23,11 +24,13 @@ const Task = styled(ListItem)`
   ${Metric} {
     color: ${props => props.active ? '#fff' : 'inherit'};
   }
+  ${LinkStyleButton} {
+    color: ${props => props.active ? '#fff' : props.theme.colors.main};
+  }
 `;
 
 const TaskList: React.FC = () => {
-  const taskContext: ITaskContext = useContext(TaskContext);
-  const { tasks, loading, currentTask, selectTask } = taskContext;
+  const { tasks, loading, currentTask, selectTask, toggleEditModal } = useContext(TaskContext);
   
   return (
     <ScrollableContainer>
@@ -74,7 +77,15 @@ const TaskList: React.FC = () => {
 
             </FlexCol>
 
-            <P textAlign="right" width="60%">{ task.name }</P>
+            <FlexCol
+              justifyContent="flex-start"
+              alignItems="flex-end"
+            >
+              <P textAlign="right" fontWeight="600" width="75%">{ task.name }</P>
+              <LinkStyleButton
+                onClick={ toggleEditModal }
+              >Edit</LinkStyleButton>
+            </FlexCol>
 
           </FlexRow>
 

@@ -21,7 +21,6 @@ const ListItem = styled.li<IListItem>`
 
   &:last-child {
     border-bottom: 0;
-    border-radius: 0 0 4px 4px;
   }
 
   &:hover {

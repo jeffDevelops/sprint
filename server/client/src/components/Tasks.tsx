@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
-import { ITask } from '../context/TaskContext';
+import { IDbTask } from '../context/TaskContext';
 
 import TaskCreate from './TaskCreate';
 import TaskList from './TaskList';
@@ -10,7 +10,7 @@ import Panel from '../styled/Panel';
 import Heading from '../styled/Heading';
 
 interface ITaskProps {
-  tasks: ITask[]
+  tasks: IDbTask[]
 }
 
 const Tasks: React.FC = () => (
