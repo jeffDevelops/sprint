@@ -19,8 +19,12 @@ async function seedSubtasks(tasks): Promise<any> {
   return await Promise.all(tasks.map(async task => {
     const associatedSubtasks: any[] = subtasks[task.name];
 
+    
     if (!associatedSubtasks) return;
-
+    
+    // Add Task ref, now that Task _id is known
+    associatedSubtasks.forEach(subtask => subtask.belongsToTask = task._id);
+    
     const dbSubtasks = await db.Subtask
       .create(associatedSubtasks)
       .catch(error => new Error(`Something went wrong inserting subtasks for a given task: ${error}`));

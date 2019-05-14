@@ -58,7 +58,7 @@ const Column = styled.div<IColumn>`
 
 const Subtasks: React.FC = () => {
   const taskContext: ITaskContext = useContext(TaskContext);
-  const { loading, currentTask, selectSubtask, currentSubtask, toggleComplete } = taskContext;
+  const { loading, currentTask, selectSubtask, currentSubtask, updateSubtask } = taskContext;
 
   let subtasks: IDbSubtask[] = [] as IDbSubtask[];
   if (currentTask) {
@@ -93,8 +93,8 @@ const Subtasks: React.FC = () => {
             <FlexRow justifyContent="space-between">
 
               { subtask.complete
-                ? <Checked onClick={ e => toggleComplete(subtask._id) }/>
-                : <Unchecked onClick={ e => toggleComplete(subtask._id) }/>
+                ? <Checked onClick={ e => updateSubtask({ ...subtask, complete: !subtask.complete }) }/>
+                : <Unchecked onClick={ e => updateSubtask({ ...subtask, complete: !subtask.complete }) }/>
               }
 
               <CompletionIndicator width="50px">

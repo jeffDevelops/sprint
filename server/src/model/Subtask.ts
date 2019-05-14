@@ -13,6 +13,10 @@ const Subtask: Schema = new Schema({
   points: {
     type: Number,
     required: true,
+  },
+  belongsToTask: {
+    type: Schema.Types.ObjectId,
+    ref: 'task',
   }
 });
 

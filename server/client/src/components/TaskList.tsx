@@ -42,55 +42,68 @@ const TaskList: React.FC = () => {
         <NoTasks>No tasks to display</NoTasks>
       }
 
-      { tasks.length > 0 && tasks.map(task => (
-        <Task
-          onClick={ () => selectTask(task._id) }
-          key={ task._id }
-          active={ currentTask ? task._id === currentTask._id : false }
-        >
+      { tasks.length > 0 && tasks.map(task => {
+        const totalPts: number = task.subtasks.reduce((acc, current) => acc + current.points, 0);
+        const totalPtsComplete: number = task.subtasks.reduce((acc, current) => current.complete ? acc + current.points : acc, 0);
 
-          <FlexRow justifyContent="space-between">
+        const percentageComplete = totalPts !== 0 ? (totalPtsComplete / totalPts * 100).toFixed(0) : 0;
 
-            <FlexCol
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              margin="0"
-              width="40%"
-            >
+        console.log({ totalPts, totalPtsComplete })
+        return (
+          <Task
+            onClick={ () => selectTask(task._id) }
+            key={ task._id }
+            active={ currentTask ? task._id === currentTask._id : false }
+          >
 
-              {/* TODO: */}
+            <FlexRow justifyContent="space-between">
 
-              <FlexRow
+              <FlexCol
                 justifyContent="flex-start"
+                alignItems="flex-start"
+                margin="0"
+                width="40%"
               >
-                <CompletionIndicator>100%</CompletionIndicator>
-                <Metric>Complete</Metric>
-              </FlexRow>
-              
-              <FlexRow
+
+                <FlexRow
+                  justifyContent="flex-start"
+                >
+                  <CompletionIndicator>{ percentageComplete }%</CompletionIndicator>
+                  <Metric>Complete</Metric>
+                </FlexRow>
+                
+                <FlexRow
+                  justifyContent="flex-start"
+                >
+                  <CompletionIndicator>{ totalPtsComplete } / { totalPts }</CompletionIndicator>
+                  <Metric>Points</Metric>
+                </FlexRow>
+                
+                <FlexRow
+                  justifyContent="flex-start"
+                >
+                  <CompletionIndicator>{ task.subtasks.filter(task => task.complete).length } / { task.subtasks.length }</CompletionIndicator>
+                  <Metric>Subtasks</Metric>
+                </FlexRow>
+
+
+              </FlexCol>
+
+              <FlexCol
                 justifyContent="flex-start"
+                alignItems="flex-end"
               >
-                <CompletionIndicator>5 / 10</CompletionIndicator>
-                <Metric>Subtasks</Metric>
-              </FlexRow>
-              
+                <P textAlign="right" fontWeight="600" width="75%">{ task.name }</P>
+                <LinkStyleButton
+                  onClick={ toggleEditModal }
+                >Edit</LinkStyleButton>
+              </FlexCol>
 
-            </FlexCol>
+            </FlexRow>
 
-            <FlexCol
-              justifyContent="flex-start"
-              alignItems="flex-end"
-            >
-              <P textAlign="right" fontWeight="600" width="75%">{ task.name }</P>
-              <LinkStyleButton
-                onClick={ toggleEditModal }
-              >Edit</LinkStyleButton>
-            </FlexCol>
-
-          </FlexRow>
-
-        </Task>
-      ))}
+          </Task>
+        )
+      })}
     </ScrollableContainer>
   )
 }

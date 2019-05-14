@@ -9,7 +9,7 @@ const CompletionIndicator = styled.span<ICompletionIndicator>`
   background-color: ${props => props.theme.colors.gray};
   color: #fff;
   border-radius: ${props => props.theme.borderRadius};
-  height: 30px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

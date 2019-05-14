@@ -18,6 +18,7 @@ export default createGlobalStyle`
       font-family: 'Roboto', sans-serif;
       letter-spacing: 0.02em;
       scrollbar-width: none;
+      user-select: none;
     }
   }
 

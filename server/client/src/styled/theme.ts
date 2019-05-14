@@ -18,7 +18,8 @@ const theme: DefaultTheme = {
     boldWeight: 500,
   },
   borderRadius: '4px',
-  boxShadow: '0px 0px 10px -1px rgba(204,204,204,1)',
+  boxShadow: '0px 0px 10px -1px rgba(204,204,204, 1)',
+  boxShadowDark: '0px 0px 10px -1px rgba(40 ,40 ,40 , 1)',
   transitions: {
     in: '.3s',
     out: '.1s',

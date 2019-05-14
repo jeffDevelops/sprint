@@ -17,6 +17,7 @@ export interface ISubtask {
 
 export interface IDbSubtask extends ISubtask {
   _id: string
+  belongsToTask: string
 }
 
 export interface ITask {
@@ -50,7 +51,7 @@ export interface ITaskContext {
   selectTask: (id: string) => void
   updateTask: (task: IDbTask) => Promise<void>
   selectSubtask: (id: string) => void
-  toggleComplete: (id: string) => Promise<void>
+  updateSubtask: (subtask: IDbSubtask) => Promise<void>
   toggleEditModal: () => void
 }
 
@@ -64,7 +65,7 @@ const TaskContext = createContext<ITaskContext>({
   selectTask: (id: string) => {},
   updateTask: async (task: IDbTask) => {},
   selectSubtask: (id: string) => {},
-  toggleComplete: async (id: string) => {},
+  updateSubtask: async (subtask: IDbSubtask) => {},
   toggleEditModal: () => {}
 });
 
@@ -169,36 +170,22 @@ export default class TaskProvider extends Component<{}, IState> {
     }
   }
 
-  toggleComplete = async (id: string): Promise<void> => {
-    const response: AxiosResponse<any> = await put(`/api/subtasks/${id}`)
+  updateSubtask = async (subtask: IDbSubtask): Promise<void> => {
+    console.log({ subtask });
+    const response: AxiosResponse<any> = await put(`/api/subtasks/${subtask._id}`, subtask)
       .catch(error => {
-        console.error('Could not reach server to update subtask:', error);
+        console.error(error);
         return error;
       });
-    
-    // Update the parent subtask (alternative could be to reload app data)
-    const stateRef: (IDbTask | null) = this.state.currentTask; // ref to copy
-    let taskParentToUpdate: IDbTask; // var to hold copy of state ref
-    let updatedTasks: IDbTask[] = []; // var to hold new Tasks
 
-    if (stateRef) { // verify current task not null
-      taskParentToUpdate = { ...stateRef as IDbTask };
-      const subtaskToToggle: (IDbSubtask | undefined) = taskParentToUpdate.subtasks.find((subtask: IDbSubtask) => subtask._id === id);
-      if (subtaskToToggle) {
-        subtaskToToggle.complete = !subtaskToToggle.complete;
-      }
-
-      // update tasks array with updated task
-      updatedTasks = [ ...this.state.tasks ];
-      const indexToSplice: number = updatedTasks.map(task => task._id).indexOf(taskParentToUpdate._id);
-      updatedTasks.splice(indexToSplice, 1, taskParentToUpdate);
+    if (response && response.data) {
+      const tasks: IDbTask[] = [...this.state.tasks];
+      const taskIndexToUpdate: number = tasks.map(task => task._id).indexOf(subtask.belongsToTask);
+      const taskToUpdate: IDbTask = tasks[taskIndexToUpdate];
+      const subtaskIndexToUpdate: number = taskToUpdate.subtasks.map(existingSubtask => existingSubtask._id).indexOf(subtask._id);
+      taskToUpdate.subtasks[subtaskIndexToUpdate] = response.data;
+      this.setState({ tasks, currentTask: taskToUpdate });
     }
-    
-    // Update the subtask with the updated subtask record from the response
-    if (response && response.data) return this.setState({
-      currentSubtask: response.data,
-      tasks: updatedTasks,
-    });
   }
 
   toggleEditModal = () => this.setState({ shouldShowEditModal: !this.state.shouldShowEditModal });
@@ -213,9 +200,9 @@ export default class TaskProvider extends Component<{}, IState> {
         selectTask: this.selectTask,
         updateTask: this.updateTask,
         selectSubtask: this.selectSubtask,
+        updateSubtask: this.updateSubtask,
         currentTask: this.state.currentTask,
         currentSubtask: this.state.currentSubtask,
-        toggleComplete: this.toggleComplete,
         toggleEditModal: this.toggleEditModal,
       }}>
 

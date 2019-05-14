@@ -13,11 +13,11 @@ export async function getMany(req, res) {
 }
 
 export async function update(req: { body: { body: any; }; params: { id: any; }; }, res: { json: (arg0: void) => void; }) {
-  const { body } = req.body;
+  const { body } = req;
   console.log('UPDATING SUBTASK');
   console.log({ body })
   const updatedSubtask = await db.Subtask
-    .findOneAndUpdate({ _id: req.params.id }, { $set: { body }}, { new: true })
+    .findOneAndUpdate({ _id: req.params.id }, { $set: body }, { new: true })
     .catch(error => console.error(error));
 
   console.log({ updatedSubtask })

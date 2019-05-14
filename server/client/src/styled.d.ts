@@ -10,18 +10,19 @@ declare module 'styled-components' {
       large: (css: string) => string
     }
     colors: {
-      main: string,
-      black: string,
-      gray: string,
+      main: string
+      black: string
+      gray: string
       lightGray: string
     }
     font: {
-      family: string,
-      normalWeight: number,
-      boldWeight: number,
+      family: string
+      normalWeight: number
+      boldWeight: number
     }
     borderRadius: string
     boxShadow: string
+    boxShadowDark: string
     transitions: {
       in: string
       out: string
