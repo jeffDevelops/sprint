@@ -16,7 +16,7 @@ const CompletionIndicator = styled.span<ICompletionIndicator>`
   text-align: center;
   margin: 3px 0;
   font-size: .7em;
-  width: ${props => props.width ? props.width : 'none'};
+  width: ${props => props.width ? props.width : 'auto'};
 `;
 
 export default CompletionIndicator;

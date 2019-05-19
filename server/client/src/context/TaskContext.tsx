@@ -1,23 +1,25 @@
 import React, { Component, createContext } from 'react';
 import { createPortal } from 'react-dom';
 
-import EditModal from '../components/EditModal';
+import EditModal from '../components/EditModal'; // TODO: rename
+import SubtaskModal from '../components/SubtaskModal';
 
 import { post, get, put, destroy } from '../http/index';
 import { AxiosResponse } from 'axios';
 
-const editModalNode = document.getElementById('edit_modal');
+const editModalNode = document.getElementById('edit_modal'); // TODO: rename
+const subtaskModalNode = document.getElementById('subtask_modal');
 
 export interface ISubtask {
   name: string
   description: string
   complete: boolean
   points: number
+  belongsToTask: string
 }
 
 export interface IDbSubtask extends ISubtask {
   _id: string
-  belongsToTask: string
 }
 
 export interface ITask {
@@ -41,6 +43,20 @@ export class Task implements ITask {
   subtasks: IDbSubtask[] = [] as IDbSubtask[];
 }
 
+export class Subtask implements ISubtask {
+  constructor(name: string, description: string, belongsToTask: string) {
+    this.name = name;
+    this.description = description;
+    this.belongsToTask = belongsToTask;
+  }
+
+  name: string;
+  description: string;
+  belongsToTask: string;
+  complete = false;
+  points = 0;
+}
+
 export interface ITaskContext {
   tasks: IDbTask[]
   loading: boolean
@@ -51,8 +67,11 @@ export interface ITaskContext {
   selectTask: (id: string) => void
   updateTask: (task: IDbTask) => Promise<void>
   selectSubtask: (id: string) => void
+  unselectSubtask: () => Promise<void>
+  createSubtask: (subtask: Subtask, currentTask: IDbTask) => Promise<void>
   updateSubtask: (subtask: IDbSubtask) => Promise<void>
-  toggleEditModal: () => void
+  toggleEditModal: () => void // TODO: rename
+  toggleSubtaskModal: () => void
 }
 
 const TaskContext = createContext<ITaskContext>({
@@ -65,8 +84,11 @@ const TaskContext = createContext<ITaskContext>({
   selectTask: (id: string) => {},
   updateTask: async (task: IDbTask) => {},
   selectSubtask: (id: string) => {},
+  unselectSubtask: async () => {},
+  createSubtask: async (subtask: Subtask, currentTask: IDbTask) => {},
   updateSubtask: async (subtask: IDbSubtask) => {},
-  toggleEditModal: () => {}
+  toggleEditModal: () => {}, // TODO: rename
+  toggleSubtaskModal: () => {}
 });
 
 interface IState {
@@ -74,7 +96,8 @@ interface IState {
   loading: boolean
   currentTask: IDbTask | null
   currentSubtask: IDbSubtask | null
-  shouldShowEditModal: boolean
+  shouldShowEditModal: boolean // TODO: rename
+  shouldShowSubtaskModal: boolean
 }
 
 export default class TaskProvider extends Component<{}, IState> {
@@ -83,7 +106,9 @@ export default class TaskProvider extends Component<{}, IState> {
     loading: true,
     currentTask: null,
     currentSubtask: null,
-    shouldShowEditModal: false,
+
+    shouldShowEditModal: false, // TODO: rename
+    shouldShowSubtaskModal: false,
   }
 
   componentDidMount() {
@@ -91,7 +116,6 @@ export default class TaskProvider extends Component<{}, IState> {
   }
 
   createTask = async(taskName: string): Promise<void> => {
-    console.log('Creating Task... allegedly...')
     const newTask = new Task(taskName);
     const response: AxiosResponse<any> = await post('/api/tasks', newTask)
       .catch(error => {
@@ -170,6 +194,27 @@ export default class TaskProvider extends Component<{}, IState> {
     }
   }
 
+  unselectSubtask = (): Promise<void> => new Promise(resolve => this.setState({ currentSubtask: null }, () => resolve()));
+
+  createSubtask = async (subtask: Subtask, currentTask: IDbTask): Promise<void> => {
+    const response: AxiosResponse<any> = await post(`/api/subtasks/${currentTask._id}`, {
+      ...subtask,
+      belongsToTask: currentTask._id
+    })
+      .catch(error => {
+        console.error(error);
+        return error;
+      });
+
+    if (response && response.data) {
+      const tasks: IDbTask[] = [...this.state.tasks];
+      const taskIndexToUpdate: number = tasks.map(task => task._id).indexOf(subtask.belongsToTask);
+      const taskToUpdate: IDbTask = tasks[taskIndexToUpdate];
+      taskToUpdate.subtasks.unshift(response.data);
+      this.setState({ tasks, currentTask: taskToUpdate });
+    }
+  }
+
   updateSubtask = async (subtask: IDbSubtask): Promise<void> => {
     console.log({ subtask });
     const response: AxiosResponse<any> = await put(`/api/subtasks/${subtask._id}`, subtask)
@@ -189,6 +234,7 @@ export default class TaskProvider extends Component<{}, IState> {
   }
 
   toggleEditModal = () => this.setState({ shouldShowEditModal: !this.state.shouldShowEditModal });
+  toggleSubtaskModal = () => this.setState({ shouldShowSubtaskModal: !this.state.shouldShowSubtaskModal });
 
   render() {
     return (
@@ -200,10 +246,13 @@ export default class TaskProvider extends Component<{}, IState> {
         selectTask: this.selectTask,
         updateTask: this.updateTask,
         selectSubtask: this.selectSubtask,
+        unselectSubtask: this.unselectSubtask,
+        createSubtask: this.createSubtask,
         updateSubtask: this.updateSubtask,
         currentTask: this.state.currentTask,
         currentSubtask: this.state.currentSubtask,
         toggleEditModal: this.toggleEditModal,
+        toggleSubtaskModal: this.toggleSubtaskModal,
       }}>
 
         { this.state.shouldShowEditModal && // determine whether to actually show modal
@@ -215,6 +264,18 @@ export default class TaskProvider extends Component<{}, IState> {
               task={ this.state.currentTask! }
             />,
             editModalNode
+          )
+        }
+
+        { this.state.shouldShowSubtaskModal && // determine whether to actually show modal
+          subtaskModalNode && // ensure node in DOM exists to inject portal
+          this.state.currentTask && // certify non-null for current task
+          
+          createPortal(
+            <SubtaskModal
+              task={ this.state.currentTask! }
+            />,
+            subtaskModalNode
           )
         }
 

@@ -43,26 +43,9 @@ const EditModal: React.FC<IEditModalProps> = (props: IEditModalProps) => {
   const [name, updateName] = useState(task.name);
   const [description, updateDescription] = useState(task.description);
   const { toggleEditModal, updateTask } = useContext(TaskContext);
-  
-  useEffect(() => {
-    document.getElementById('root')!.classList.add('unfocus_body');
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      document.getElementById('root')!.classList.remove('unfocus_body');
-    };
-  });
 
   return (
-    <ModalUnderlay onClick={ () => {
-      if (name.trim() !== task.name || (description && description.trim() !== task.description)) {
-        if (window.confirm('Exit without saving changes?')) {
-          toggleEditModal();
-        }
-      } else {
-        toggleEditModal();
-      }
-    }}>
+    <ModalUnderlay onClick={ validate }>
         <CenterModal
           width="60%"
           height="60vh"
@@ -115,6 +98,17 @@ const EditModal: React.FC<IEditModalProps> = (props: IEditModalProps) => {
         </CenterModal>
     </ModalUnderlay>
   );
+
+  function validate() {
+    if (name.trim() !== task.name || (description && description.trim() !== task.description)) {
+      if (window.confirm('Exit without saving changes?')) {
+        toggleEditModal();
+      }
+    } else {
+      toggleEditModal();
+    }
+  }
 }
+
 
 export default EditModal;

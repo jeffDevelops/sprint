@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext } from '../context/TaskContext';
+import { TaskContext } from '../context/TaskContext';
 
 import EditPoints from './EditPoints';
 
@@ -13,8 +13,7 @@ import LinkStyleButton from '../styled/LinkStyleButton';
 import Description from '../styled/Description';
 
 const SubtaskDetail: React.FC = () => {
-  const taskContext: ITaskContext = useContext(TaskContext);
-  const { loading, currentSubtask } = taskContext;
+  const { toggleSubtaskModal, loading, currentSubtask, updateSubtask } = useContext(TaskContext);
 
   if (!currentSubtask && loading) {
     return <Panel><NoData>Loading</NoData></Panel>
@@ -22,7 +21,7 @@ const SubtaskDetail: React.FC = () => {
     return (
       <Panel>
         <NoData>Select a subtask or &nbsp;
-          <LinkStyleButton>create one</LinkStyleButton>
+          <LinkStyleButton onClick={ toggleSubtaskModal }>create one</LinkStyleButton>
         </NoData>
       </Panel>
     )
@@ -35,13 +34,16 @@ const SubtaskDetail: React.FC = () => {
           alignItems="flex-start"
         >
           <Heading>{ currentSubtask!.name }</Heading>
-          <LinkStyleButton>Edit Subtask</LinkStyleButton>
+          <LinkStyleButton onClick={ toggleSubtaskModal }>Edit Subtask</LinkStyleButton>
         </FlexRow>
 
         <Heading margin="15px 0 5px 0">Description</Heading>
         <Description>{ currentSubtask!.description ? currentSubtask!.description : '' }</Description>
 
-        <EditPoints subtask={ currentSubtask! } />
+        <EditPoints
+          updateParent={ points => updateSubtask({ ...currentSubtask!, points }) }
+          points={ currentSubtask!.points }
+        />
       </Panel>
     )
   }

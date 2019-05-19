@@ -1,19 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import { TaskContext, ITaskContext, IDbSubtask } from '../context/TaskContext';
 
 import TaskTitleBar from './TaskTitleBar';
+import SubtaskModal from './SubtaskModal';
 
 import FlexRow from '../styled/FormatHelpers/FlexRow';
-import FlexStartCol from '../styled/FormatHelpers/FlexCol';
-import FlexStartRow from '../styled/FormatHelpers/FlexRow';
 import Panel from '../styled/Panel';
 import ScrollableContainer from '../styled/ScrollableContainer';
 import NoSubtasks from '../styled/NoData';
 import ListItem from '../styled/ListItem';
 import P from '../styled/P';
 import CompletionIndicator from '../styled/CompletionIndicator';
+import LinkStyleButton from '../styled/LinkStyleButton';
 
 import { RadioButtonUnchecked } from 'styled-icons/material/RadioButtonUnchecked';
 import { CheckCircle } from 'styled-icons/boxicons-regular/CheckCircle';
@@ -58,7 +58,7 @@ const Column = styled.div<IColumn>`
 
 const Subtasks: React.FC = () => {
   const taskContext: ITaskContext = useContext(TaskContext);
-  const { loading, currentTask, selectSubtask, currentSubtask, updateSubtask } = taskContext;
+  const { loading, currentTask, selectSubtask, unselectSubtask, currentSubtask, updateSubtask, toggleSubtaskModal } = taskContext;
 
   let subtasks: IDbSubtask[] = [] as IDbSubtask[];
   if (currentTask) {
@@ -69,6 +69,7 @@ const Subtasks: React.FC = () => {
 
   return (
     <Panel>
+
       <TaskTitleBar
         name={ currentTask.name }
         description={ currentTask.description ? currentTask.description : '' }
@@ -80,7 +81,12 @@ const Subtasks: React.FC = () => {
         }
 
         { subtasks.length === 0 && !loading &&
-          <NoSubtasks>No subtasks to display</NoSubtasks>
+          <NoSubtasks>
+            No subtasks to display. &nbsp;
+            <LinkStyleButton
+              onClick={ () => unselectSubtask().then(() => toggleSubtaskModal()) }
+            >Create one</LinkStyleButton>
+          </NoSubtasks>
         }
 
         { subtasks.length > 0 && subtasks.map(subtask => (
@@ -98,10 +104,7 @@ const Subtasks: React.FC = () => {
               }
 
               <CompletionIndicator width="50px">
-                { subtask.points === 1
-                    ? `${subtask.points} pt`
-                    : `${subtask.points} pts`
-                }
+                { subtask.points }
               </CompletionIndicator>
               
               <Column width="30%">

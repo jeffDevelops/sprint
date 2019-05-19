@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+
+import { TaskContext } from '../context/TaskContext';
 
 import FlexCol from '../styled/FormatHelpers/FlexCol';
 import FlexRow from '../styled/FormatHelpers/FlexRow';
@@ -23,33 +25,34 @@ const PlusIcon = styled(AddCircleOutline)`
   margin-right: 5px;
 `;
 
-const TaskTitleBar: React.FC<ITaskTitleBarProps> = (props: ITaskTitleBarProps) => (
-  <StickyHeader>
+const TaskTitleBar: React.FC<ITaskTitleBarProps> = (props: ITaskTitleBarProps) => {
+  const { toggleSubtaskModal } = useContext(TaskContext);
 
-    <FlexRow
-      justifyContent="space-between"
-      alignItems="flex-start"
-    >
-      <FlexCol
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        width="70%">
-        <Heading>{ props.name }</Heading>
-        <Description>{ props.description }</Description>
-      </FlexCol>
+  return (
+    <StickyHeader>
 
       <FlexRow
-        justifyContent="flex-end"
+        justifyContent="space-between"
         alignItems="flex-start"
-        width="30%"
       >
-        <PlusIcon />
-        <LinkStyleButton>New Subtask</LinkStyleButton>
-      </FlexRow>
-    </FlexRow>
+        <FlexCol
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          width="70%">
+          <Heading>{ props.name }</Heading>
+          <Description>{ props.description }</Description>
+        </FlexCol>
 
-  </StickyHeader>
-    
-);
+        <FlexRow
+          width="30%"
+          alignItems="flex-start"
+          justifyContent="flex-end">
+          <LinkStyleButton onClick={ toggleSubtaskModal }><PlusIcon />Subtask</LinkStyleButton>
+        </FlexRow>
+      </FlexRow>
+
+    </StickyHeader>
+  )
+}
 
 export default TaskTitleBar;

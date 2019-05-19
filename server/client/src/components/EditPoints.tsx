@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useContext } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { DefaultTheme, css } from 'styled-components';
 
 import { TaskContext, IDbSubtask } from '../context/TaskContext';
 
@@ -11,36 +11,47 @@ import P from '../styled/P';
 
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle';
 import { MinusCircle } from 'styled-icons/boxicons-regular/MinusCircle';
+import { Check } from 'styled-icons/material/Check';
+
+interface IIconProps {
+  theme: DefaultTheme
+  disabled?: boolean
+}
 
 const iconStyles = css`
-  color: ${(props: { theme: { colors: { main: any; }; }; }) => props.theme.colors.main};
+  color: ${(props: IIconProps) => props.disabled ? props.theme.colors.lightGray : props.theme.colors.main};
   cursor: pointer;
   transform-origin: center center;
-  transition: transform ${props => props.theme.transitions.out};
+  transition: transform ${(props: IIconProps) => props.theme.transitions.out};
+  width: 25px;
+  cursor: ${(props: IIconProps) => props.disabled ? 'not-allowed' : 'pointer'};
 
   &:hover {
-    transition: transform ${props => props.theme.transitions.in};
-    transform: scale(1.1);
+    transition: transform ${(props: IIconProps) => props.theme.transitions.in};
+    transform: ${(props: IIconProps) => props.disabled ? 'scale(1)' : 'scale(1.1)'};
   }
 `;
 
-const AddIcon = styled(PlusCircle)`
+const AddIcon = styled(PlusCircle)<IIconProps>`
   ${iconStyles}
 `;
 
-const SubtractIcon = styled(MinusCircle)`
+const SubtractIcon = styled(MinusCircle)<IIconProps>`
+  ${iconStyles}
+`;
+
+const CheckIcon = styled(Check)<IIconProps>`
   ${iconStyles}
 `;
 
 interface IEditPoints {
-  subtask: IDbSubtask
+  updateParent: (points: number) => (Promise<void> | void)
+  points: number
 }
 
 const EditPoints: React.FC<IEditPoints> = (props: IEditPoints) => {
-  const [points, updatePoints] = useState(props.subtask.points);
+  const [points, updatePoints] = useState(props.points);
   const [shouldShowEditUI, updateShouldShowEditUI] = useState(false);
-
-  const { updateSubtask } = useContext(TaskContext);
   
   return (
     <Fragment>
@@ -48,32 +59,34 @@ const EditPoints: React.FC<IEditPoints> = (props: IEditPoints) => {
 
       { shouldShowEditUI
         ? <FlexRow
+            width="40%"
+            margin="0 auto 15px auto"
             alignItems="center"
             justifyContent="space-between">
 
-            <Button
-              width="50px"
-              minWidth="50px"
+            <SubtractIcon
               disabled={ points === 1 }
-              onClick={ () => updatePoints(prevFibNum(points)) }
-            >-</Button>
+              onClick={ () => points !== 1 && updatePoints(prevFibNum(points)) }
+            />
 
             <Heading textAlign="center">{ points }</Heading>
 
-            <Button
-              width="50px"
-              minWidth="50px"
+            <AddIcon
               disabled={ points === 144 }
-              onClick={ () => updatePoints(nextFibNum(points)) }
-            >+</Button>
+              onClick={ () => points !== 144 && updatePoints(nextFibNum(points)) }
+            />
 
-            <Button onClick={ async () => {
-              await updateSubtask({ ...props.subtask, points });
-              updateShouldShowEditUI(false);
-            }}>Save</Button>
+            <CheckIcon
+              onClick={ async () => {
+                props.updateParent(points);
+                updateShouldShowEditUI(false);
+              }}
+            />
 
           </FlexRow>
         : <FlexRow
+            height="25px"
+            margin="0 0 15px 0"
             alignItems="center"
             justifyContent="flex-start">
             <Heading margin="0 5px 0 0">{ points }</Heading>

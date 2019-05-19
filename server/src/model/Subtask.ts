@@ -1,4 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document} from 'mongoose';
+import Task from './Task';
+
+interface ISubtask extends Document {
+  name: string
+  description: string
+  complete: boolean
+  points: number
+  belongsToTask: string
+}
 
 const Subtask: Schema = new Schema({
   name: {
@@ -20,4 +29,18 @@ const Subtask: Schema = new Schema({
   }
 });
 
-export default model('Subtask', Subtask);
+Subtask.pre<ISubtask>('save', async function(next) { // ! note the non-arrow function
+  const subtask = this;
+  console.log(subtask.belongsToTask);
+  const updatedTask = await Task.findOneAndUpdate(
+    { _id: subtask.belongsToTask },
+    { $push: { subtasks: subtask._id } }
+  ).catch(error => {
+    console.error(error);
+    next(error);
+  });
+  console.log({updatedTask});
+  return next(null);
+});
+
+export default model<ISubtask>('Subtask', Subtask);

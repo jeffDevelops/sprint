@@ -1,10 +1,19 @@
 import * as db from '../model';
 
+export async function create(req, res): Promise<void> {
+  console.log(req.body);
+  const subtask = await db.Subtask
+    .create(req.body)
+    .catch(error => console.error(error));
+  
+  res.json(subtask);
+}
+
 export async function getOne() {
   
 }
 
-export async function getMany(req, res) {
+export async function getMany(req, res): Promise<void> {
   const subtasks = await db.Subtask
     .find({})
     .catch(error => console.error(error));
@@ -12,15 +21,11 @@ export async function getMany(req, res) {
   res.json(subtasks);
 }
 
-export async function update(req: { body: { body: any; }; params: { id: any; }; }, res: { json: (arg0: void) => void; }) {
+export async function update(req, res): Promise<void> {
   const { body } = req;
-  console.log('UPDATING SUBTASK');
-  console.log({ body })
   const updatedSubtask = await db.Subtask
     .findOneAndUpdate({ _id: req.params.id }, { $set: body }, { new: true })
     .catch(error => console.error(error));
-
-  console.log({ updatedSubtask })
 
   res.json(updatedSubtask);
 }

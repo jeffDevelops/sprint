@@ -62,7 +62,7 @@ const TaskList: React.FC = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 margin="0"
-                width="40%"
+                width="50%"
               >
 
                 <FlexRow
@@ -75,14 +75,14 @@ const TaskList: React.FC = () => {
                 <FlexRow
                   justifyContent="flex-start"
                 >
-                  <CompletionIndicator>{ totalPtsComplete } / { totalPts }</CompletionIndicator>
+                  <CompletionIndicator>{ totalPtsComplete }/{ totalPts }</CompletionIndicator>
                   <Metric>Points</Metric>
                 </FlexRow>
                 
                 <FlexRow
                   justifyContent="flex-start"
                 >
-                  <CompletionIndicator>{ task.subtasks.filter(task => task.complete).length } / { task.subtasks.length }</CompletionIndicator>
+                  <CompletionIndicator>{ task.subtasks.filter(task => task.complete).length }/{ task.subtasks.length }</CompletionIndicator>
                   <Metric>Subtasks</Metric>
                 </FlexRow>
 
@@ -92,8 +92,9 @@ const TaskList: React.FC = () => {
               <FlexCol
                 justifyContent="flex-start"
                 alignItems="flex-end"
+                width="45%"
               >
-                <P textAlign="right" fontWeight="600" width="75%">{ task.name }</P>
+                <P textAlign="right" fontWeight="600" width="100%">{ task.name }</P>
                 <LinkStyleButton
                   onClick={ toggleEditModal }
                 >Edit</LinkStyleButton>

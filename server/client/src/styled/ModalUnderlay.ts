@@ -3,7 +3,7 @@ import Panel from '../styled/Panel';
 
 const transitionBackground = keyframes`
   0% { background-color: rgba(0, 0, 0, 0); }
-  100% { background-color: rgba(0, 0, 0, .5); }
+  100% { background-color: rgba(0, 0, 0, .4); }
 `;
 
 // name duration timing-function delay iteration-count direction fill-mode play-state;
@@ -20,11 +20,8 @@ const ModalUnderlay = styled.div`
   bottom: 0;
   margin: auto;
   transform: translateZ(0);
+  cursor: pointer;
   willchange: background-color;
-
-  ${Panel} {
-    box-shadow: none;
-  }
 `;
 
 export default ModalUnderlay;

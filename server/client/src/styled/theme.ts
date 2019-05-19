@@ -5,6 +5,7 @@ const theme: DefaultTheme = {
     small: css => `@media(max-width: 575px) { ${css} }`,
     medium: css => `@media(min-width: 576px) and (max-width: 1200px) { ${css} }`,
     large: css => `@media(min-width: 1201px) { ${css} }`,
+    print: css => `@media print { ${css} }`,
   },
   colors: {
     main: '#ee0d4e',
@@ -18,8 +19,7 @@ const theme: DefaultTheme = {
     boldWeight: 500,
   },
   borderRadius: '4px',
-  boxShadow: '0px 0px 10px -1px rgba(204,204,204, 1)',
-  boxShadowDark: '0px 0px 10px -1px rgba(40 ,40 ,40 , 1)',
+  boxShadow: '0px 0px 10px -1px rgba(90,90,90, .3)',
   transitions: {
     in: '.3s',
     out: '.1s',

@@ -8,6 +8,7 @@ declare module 'styled-components' {
       small: (css: string) => string
       medium: (css: string) => string
       large: (css: string) => string
+      print: (css: string) => string
     }
     colors: {
       main: string
@@ -22,7 +23,6 @@ declare module 'styled-components' {
     }
     borderRadius: string
     boxShadow: string
-    boxShadowDark: string
     transitions: {
       in: string
       out: string

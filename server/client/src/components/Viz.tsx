@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TaskContext, ITaskContext, IDbSubtask } from '../context/TaskContext';
+import { TaskContext, IDbSubtask } from '../context/TaskContext';
 
 import CompletionPieGraph from './CompletionPieGraph';
 
@@ -11,8 +11,7 @@ import Heading from '../styled/Heading';
 import LinkStyleButton from '../styled/LinkStyleButton';
 
 const Viz: React.FC = () => {
-  const taskContext: ITaskContext = useContext(TaskContext);
-  const { loading, currentTask } = taskContext;
+  const { toggleSubtaskModal, loading, currentTask } = useContext(TaskContext);
 
   if (!currentTask && loading) {
     return <Panel><NoData>Loading</NoData></Panel>
@@ -51,7 +50,7 @@ const Viz: React.FC = () => {
             />
           : <NoData>
               This task doesn't have any subtasks yet. &nbsp;
-              <LinkStyleButton>Create one</LinkStyleButton>
+              <LinkStyleButton onClick={ toggleSubtaskModal }>Create one</LinkStyleButton>
             </NoData>
         }
 
