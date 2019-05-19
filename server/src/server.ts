@@ -4,12 +4,11 @@ import * as logger from 'morgan';
 import * as cors from 'cors';
 
 import apiRouter from './api/index';
-
 import originWhitelist from './config/originWhitelist';
 
-const port = process.env.PORT || 3000;
+const port: string = process.env.PORT || '3000';
 
-const app = express();
+const app: express.Application = express();
 
 app.use(logger('combined'));
 app.use(bodyParser.json());

@@ -9,8 +9,8 @@ This module will cover:
 - 🌳 React state management with the React Context API
 - 📊 Data visualization with Nivo and custom solutions
 - ⛩ Portals
-- 👨‍👩‍👧 Real-world associations in Mongoose via `populate`
-- 🎣 Introduction to Hooks
+- 👨‍👩‍👧 Real-world associations in Mongoose via `populate` and Mongoose hooks
+- 🎣 Introduction to React Hooks
 - 👩‍🔬 Real world application of the infamous Fibonacci interview problem
 
 # What we're building: 
@@ -56,7 +56,7 @@ npm init -y
 With npm all set, let's install TypeScript and the server-side dependencies we're going to use:
 
 ```
-npm i --save-dev typescript tslint morgan
+npm i --save-dev typescript tslint
 ```
 While that's going, let's talk a bit about the elephant in the room.
 
@@ -213,6 +213,93 @@ While we're at it, let's try running the script by using our npm script we added
 ```
 npm run start:watch
 ```
+
+## Client Side Folder Structure
+Inside the client folder you created, run the following. Notice the `.` at the end of the command instead of the app name you might be used to seeing--that'll place the root of the React application within this folder, instead of creating another folder to house itself. Also, be sure to use the `--typescript` flag.
+
+**Command Line (from `client/`)**
+```
+# Non-npx'ers
+create-react-app . --typescript
+
+# npx'ers
+npx create-react-app . --typescript
+```
+
+Once everything's installed and ready to go, you may notice some oddities, most notably, the `.tsx` extension. Unlike with plain JavaScript with JSX where .js and .jsx file extensions are interchangeable, **`.tsx` is not optional.** I mean... I'm not stopping you, but TSLint sure will.
+
+Let's clean out all of the stuff we don't need. In this day and age, friends don't let friends write generic CSS, so tell those files to GTFOH. Similarly, kick the React logo svg to the curb. Let's also give ourselves a clean slate by removing all of the JSX from the `App.tsx` component (make sure to leave a set of divs or Fragments, so that `App` renders *something*).
+
+Cool, that's about it for prepping our folder structure. Go ahead and run this with a simple `npm run start`, and we should just have a blank page. A clean slate.
+
+## Express Routing
+
+#### Server Listener
+I like to start full-stack MERN applications with the Express part. Achieving network connectivity between the client and server is pretty fundamental to a full-stack app's functionality, so let's get crackin'.
+
+Let's install some things:
+```
+npm i --save express mongoose body-parser
+npm i --save-dev @types/express @types/mongoose
+```
+
+For those savvy amongst you, you're probably questioning the second set of dev-dependencies. There's an entire registry of types called DefinitelyTyped you can access from npm via `@types` for certain libraries like Mongoose and Express that allow you to explicitly type-annotate imports from those libraries--that way if you inadvertently do anything fishy with the exports those libraries are giving you, you can know about it right away. Once the types are installed, VS Code is pretty good about giving you options to select from, or you can use Google-foo.
+
+In `src/server.ts`, delete the Greeting class we created, and let's set up a listener to wait for our requests. Like you're probably accustomed, we'll pass it an Express app, configured with `body-parser` middleware to accept JSON, as well as our main router, which we'll build after this. Let's also use a logger from the `morgan` package, so that we can debug incoming requests if necessary:
+
+**src/server.ts**
+```
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import * as logger from 'morgan';
+
+const port: string = process.env.PORT || '3000';
+
+const app: express.Application = express();
+
+app.use(logger('combined'));
+app.use(bodyParser.json())
+
+app.listen(port, () => console.log(`Sprint API 🏃‍  on port ${port}`));
+```
+
+Whoaaaaa! ES7 imports in Node? No way. Yes, way. We've got some type annotations on the variables we're declaring here as well. "Why isn't `port` a number? I'm used to that being a number after the double pipe," you might say. Well, it definitely could be, but `process.env` variables are always read in as strings, so why not just make this variable consistently a string? If you're committed to a number an alternative is to specify that the type could be *either* a string *or* a number like so:
+```
+const port: (string | number) = process.env.PORT || 3000;
+``` 
+The entire goal with TS is to be less loosey-goosey with your types, so I'd steer away from **union types** like this as much as possible.
+
+The `express.Application` type is a bit different too: that comes from the @types/express type package we installed. I found it by typing `:express.` and selecting from the VS Code type suggestions. Now, if we accidentally reassign `app` or something else weird, TypeScript is going to have something to say about it.
+
+How do we test that this is working? We start it and ping it, of course!
+**Command Line (from the project root)**
+```
+npm run start:watch
+```
+**Command Line (from another tab)**
+```
+curl localhost:3000
+```
+Run the `curl` command and check in the tab where you started your server process to see that `morgan` is logging at the very least, something.
+
+It's *aliiiiiiiive!* Barely. But there's a pulse!
+
+## The Data Layer
+
+## Client / Server Network Connectivity
+
+## The TaskContext - the brain of our client-side application
+
+## Design System and Theme
+
+## Our custom component library
+
+## Layout
+
+## 
+
+
+
 
 
 
