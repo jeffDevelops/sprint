@@ -22,7 +22,7 @@ const checkboxStyles: string = `
   width: 30px;
   cursor: pointer;
 `;
-  
+   
 const Unchecked = styled(RadioButtonUnchecked)`
   ${checkboxStyles}
   color: ${props => props.theme.colors.main};
