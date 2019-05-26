@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const TaskSchema: Schema = new Schema({
   name: {
@@ -12,9 +12,8 @@ const TaskSchema: Schema = new Schema({
   },
   subtasks: [{
     type: Schema.Types.ObjectId,
-    ref: 'Subtask'
+    ref: "Subtask",
   }],
 });
 
-export default model('Task', TaskSchema);
-
+export default model("Task", TaskSchema);
