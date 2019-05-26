@@ -9,7 +9,7 @@ This module will cover:
 - 🌳 React state management with the React Context API
 - 📊 Data visualization with Nivo and custom solutions
 - ⛩ Portals
-- 👨‍👩‍👧 Real-world associations in Mongoose via `populate` and Mongoose hooks
+- 👨‍👩‍👧 Real-world associations in Mongoose via `populate` and Mongoose middleware
 - 🎣 Introduction to React Hooks
 - 👩‍🔬 Real world application of the infamous Fibonacci interview problem
 
@@ -63,7 +63,7 @@ While that's going, let's talk a bit about the elephant in the room.
 #### Why TypeScript?
 ![typescript](assets/typescript.png)
 
-TypeScript is a superset of JavaScript, meaning that it can do everything JavaScript can do with the same syntax, but with numerous extras. It gives us many of the language conventions of other object oriented languages that JavaScript doesn't currently have, like enums, interfaces, and notably bringing ES7 modules to Node, and compiles them all down to JavaScript that the browser / V8 can understand. Yay, new stuff to make our development experience nicer, right?
+TypeScript is a superset of JavaScript, meaning that it can do everything JavaScript can do with the same syntax, but with numerous extras. It gives us many of the language conventions of other object oriented languages that JavaScript doesn't currently have, like enums and interfaces and compiles them all down to JavaScript that the browser / V8 can understand. Yay, new stuff to make our development experience nicer, right?
 
 Wrong--at least, initially. If you haven't worked with TypeScript and JavaScript was your first scripting language, TypeScript is going to be a royal pain to work with, because it introduces **static typing**, and in many cases removes the developer's reliance on the type inference that is so inherent in the JavaScript language. It forces you to think a bit deeper as you code, but in doing so, it eliminates potential bugs before you even finish writing the line of code at hand. Emotionally, when I was learning TypeScript, I felt personally attacked, and my productivity took a nosedive. I promise, though, that **the more experience you get with TS, you'll start to thank it for catching things you missed, you'll have more confidence that the code you write isn't going to break in production, and you ensure code integrity between the other collaborators on your team.**
 

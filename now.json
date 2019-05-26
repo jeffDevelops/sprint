@@ -1,0 +1,6 @@
+{
+  "builds": [
+    { "src": "./server/client/build/index.html", "use": "@now/static" },
+    { "src": "./server/dist/server.js", "use": "@now/node" }
+  ]
+}
