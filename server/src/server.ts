@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as cors from 'cors';
+import * as path from 'path';
 
 import apiRouter from './api/index';
 import originWhitelist from './config/originWhitelist';
@@ -26,5 +27,10 @@ app.use(cors({
 }));
 
 app.use('/api', apiRouter);
+
+app.use(express.static(path.join(__dirname + '../client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '../client/build'));
+});
 
 app.listen(port, () => console.log(`Sprint API 🏃‍  on port ${port}`));
